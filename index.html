@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+form {
+    margin: 10px;
+}
+
+.show {
+    display: block;
+}
+
+.hide {
+    display: none;
+}
+
+.container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.column {
+    margin: 10px;
+}
+
+</style>
+
+
+<title>JSON to CSV converter</title>
+</head>
+<body>
+<h1>JSON to CSV converter</h1>
+<h2>Convert</h2>
+<form>
+<input type="radio" id="jsontocsv" name="mode" value="jsontocsv" checked>JSON to CSV</input><br><br>
+<input type="radio" id="csvtojson" name="mode" value="csvtojson">CSV to JSON</input>
+</form>
+
+<div class="JSONtoCSV show">
+<div class="container">
+<div class="column">
+<textarea id="JSONinput" rows="12" cols="30" placeholder="Enter JSON"></textarea><br><br>
+</div>
+<div class="column">
+<textarea id="CSVoutput" rows="12" cols="30" value=""></textarea><br><br>
+</div>
+</div>
+<button id="convertJSON">Convert</button><br><br>
+<button id="clearJSON">Clear</button><br><br>
+</div>
+
+<div class="CSVtoJSON hide">
+<div class="container">
+<div class="column">
+<textarea id="CSVinput" rows="12" cols="30" placeholder="Enter CSV"></textarea><br><br>
+</div>
+<div class="column">
+<textarea id="JSONoutput" rows="12" cols="30" value=""></textarea>
+</div>
+</div>
+<button id="convertCSV">Convert</button><br><br>
+<button id="clearCSV">Clear</button><br><br>
+
+</div>
+
+<p id="message"></p>
+
+
+</body>
+
+
+<script src="jsontocsv.js"></script>
+
+</html>
