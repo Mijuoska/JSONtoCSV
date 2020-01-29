@@ -1,165 +1,175 @@
  
-    function ConvertToJS() {
-        var input = document.getElementById('JSONinput').value
-        try {
-            var JSobject = JSON.parse(input);
-        } catch (e) {
-            document.getElementById('message').innerHTML = "<p style='color: red;'>Text area empty or not valid JSON!</p>"
-            return false;
-        }
-        return JSobject;
+ if (window.File && window.FileReader && window.FileList && window.Blob) {
+     // Great success! All the File APIs are supported.
+ } else {
+     alert('The File APIs are not fully supported in this browser.');
+ }
+ 
+ 
+ function ConvertToJS() {
+     let input = document.getElementById('JSONinput').value
+     try {
+         var JSobject = JSON.parse(input);
+     } catch (e) {
+         document.getElementById('message').innerHTML = "<p style='color: red;'>Text area empty or not valid JSON!</p>"
+         return false;
+     }
+     return JSobject;
+ }
+
+ function createCSV(JSObject) {
+     let values = []
+     // get object properties and values
+     if (!JSObject[0]) {
+         var headers = Object.keys(JSObject);
+         values.push(Object.values(JSObject))
+     } else {
+         for (let i = 0; i < JSObject.length; i++) {
+             values.push(Object.values(JSObject[i]))
+         }
+     }
+     CSV = [headers, values]
+     return CSV
+ }
+
+
+
+ function printCSV() {
+     let JSObject = ConvertToJS();
+     let CSVarr = createCSV(JSObject)
+     let headersArr = CSVarr[0]
+     let valuesArr = CSVarr[1]
+     let CSVheaders = headersArr.join() + "\n"
+     let CSVvalues = ""
+     valuesArr.forEach(function (item) {
+         CSVvalues += item.join() + "\n"
+     });
+     document.getElementById('CSVoutput').value = CSVheaders + CSVvalues
+ }
+
+
+
+
+ function getLineBreakIndex(csvArr) {
+     return csvArr[0].indexOf("\n")
+ }
+
+
+ function createCSVArray(input) {
+  let csvArr = input.split("\n")
+    for (let i = 0; i < csvArr.length; i++) {
+        csvArr[i] = csvArr[i].replace(/\n/ig, "")
+        csvArr[i] = csvArr[i].trim()
+        csvArr[i] = csvArr[i].split(",")
     }
+     return csvArr
+ }
 
-    function createCSVArrays(JSObject) {
-        values = []
-        // get object properties and values
-        if (!JSObject[0]) {
-            headers = Object.keys(JSObject);
-            values.push(Object.values(JSObject))
-        } else {
-        for (var i = 0; i < JSObject.length; i++) {
-            values.push(Object.values(JSObject[i]))
-        }
-             }
-        CSV = [headers, values]
-        return CSV
-    }
+ function createJSOBject(csvArr) {
+     header = csvArr.splice(0,1)[0]
+     let objArr = []
+     for (let i = 0; i < csvArr.length; i++) {
+         let obj = {}
+         header.forEach(function (item) {
+             obj[item] = csvArr[i][header.indexOf(item)]
+         });
+         objArr.push(obj);
+     }
+     if (objArr.length == 1) {
+         return objArr[0]
+     } else {
+         return objArr
+     }
+ }
 
 
-
-    function printCSV() {
-        var JSObject = ConvertToJS();
-        var CSVarr = createCSVArrays(JSObject)
-        headersArr = CSVarr[0]
-        valuesArr = CSVarr[1]
-        CSVheaders = headersArr.join() + "\n"
-        CSVvalues = ""
-        valuesArr.forEach(function (item) {
-            CSVvalues += item.join() + "\n"
-        });
-        document.getElementById('CSVoutput').value = CSVheaders + CSVvalues
-    }
+ function convertCSV() {
+     const input = document.getElementById('CSVinput').value
+     csvArr = createCSVArray(input);
+     let JSObject = createJSOBject(csvArr)
+     document.getElementById('JSONoutput').value = JSON.stringify(JSObject)
+ }
 
 
 
-function createCSVArray(csvString) {
-    var csvArr = csvString.split(" ")
-    return csvArr
-}
-
-function getLineBreakIndex(csvArr) {
-    return csvArr[0].indexOf("\n")
-}
-
-function getCSVHeaders(csvArr) {    
-    var firstLineBreakIndex = getLineBreakIndex(csvArr)
-    var headerString = csvArr[0].slice(0, firstLineBreakIndex)
-    var headerArr = headerString.split(",")
-    return headerArr
-}
-
-function getCSVValues(csvArr){
-    var headerArr = getCSVHeaders(csvArr)
-    var firstLineBreakIndex = getLineBreakIndex(csvArr)
-    // Insert a linebreak to the end in case not in input: This makes sure the last row is recognized by what follows
-    if (csvArr[0].slice(-1) != '\n') {
-        csvArr[0] += '\n'
-    }
-    var valuesString = csvArr[0].slice(firstLineBreakIndex)
-    var cleanedStr = valuesString.replace(/\n/ig, ',')
-    var valuesArr = cleanedStr.replace(/,/g, " ").trim().split(" ")
-    // create separate arrays for each row, remove corresponding values from values array. Store rows in their own array
-    var numRows = csvArr[0].split("\n").length - 2
-    var rows = []
-    for (var i = 0; i < numRows; i++) {
-        var row = valuesArr.slice(0, headerArr.length)
-        valuesArr.splice(0, headerArr.length)
-        rows.push(row)
-    }
-    return rows
-}
-
-function createJSOBject(header, rows) {
-    var objArr = []
-    for (var i = 0; i < rows.length; i++) {
-        var obj = {}
-        header.forEach(function (item) {
-            obj[item] = rows[i][header.indexOf(item)]
-        });
-        objArr.push(obj);
-    }
-    if (objArr.length == 1) {
-        return objArr[0]
-    } else {
-    return objArr
-    }
-}
-   
-
-    function convertCSV() {
-        var input = document.getElementById('CSVinput').value
-        var csvArr = createCSVArray(input);
-        var header = getCSVHeaders(csvArr);
-        var rows = getCSVValues(csvArr);
-        var JSObject = createJSOBject(header, rows)
-        document.getElementById('JSONoutput').value = JSON.stringify(JSObject)
-    }
+ function clearBoxes(input, output, message) {
+     document.getElementById(input).value = ""
+     document.getElementById(output).value = ""
+     if (document.getElementById(message)) {
+         document.getElementById(message).innerText = ""
+     }
+ }
 
 
 
-    function clearBoxes(input, output, message) {
-        document.getElementById(input).value = ""
-        document.getElementById(output).value = ""
-        if (document.getElementById(message)) {
-            document.getElementById(message).innerText = ""
-        }
-    }
-
-    
-
-   var modeSelector = document.getElementsByName("mode")
-    modeSelector.forEach(function (option) {
-        option.addEventListener("change", function (e) {
-        if (e.target.value == 'jsontocsv') {
-            document.getElementsByClassName('JSONtoCSV')[0].classList.add('show')
-            document.getElementsByClassName('JSONtoCSV')[0].classList.remove('hide')
+ var modeSelector = document.getElementsByName("mode")
+ modeSelector.forEach(function (option) {
+     option.addEventListener("change", function (e) {
+         if (e.target.value == 'jsontocsv') {
+             document.getElementsByClassName('JSONtoCSV')[0].classList.add('show')
+             document.getElementsByClassName('JSONtoCSV')[0].classList.remove('hide')
              document.getElementsByClassName('CSVtoJSON')[0].classList.add('hide')
 
-        } else if (e.target.value == 'csvtojson') {
-            document.getElementsByClassName('CSVtoJSON')[0].classList.add('show')
+         } else if (e.target.value == 'csvtojson') {
+             document.getElementsByClassName('CSVtoJSON')[0].classList.add('show')
              document.getElementsByClassName('CSVtoJSON')[0].classList.remove('hide')
              document.getElementsByClassName('JSONtoCSV')[0].classList.add('hide')
              document.getElementsByClassName('JSONtoCSV')[0].classList.remove('show')
 
-        }
+         }
 
- }); 
+     });
 
-});
+ });
 
-var convertJSONButton = document.getElementById("convertJSON") 
-convertJSONButton.addEventListener("click", function () {
-    printCSV()
-    
-}) 
+ let convertJSONButton = document.getElementById("convertJSON")
+ convertJSONButton.addEventListener("click", function () {
+     printCSV()
 
-var convertCSVButton = document.getElementById('convertCSV')
-convertCSVButton.addEventListener('click', function() {
-    convertCSV()
-});
+ })
 
-var clearJSONtoCSVButton = document.getElementById("clearJSON")
-clearJSONtoCSVButton.addEventListener("click", function() {
-    clearBoxes('JSONinput', 'CSVoutput', 'message')
-})
+ let convertCSVButton = document.getElementById('convertCSV')
+ convertCSVButton.addEventListener('click', function () {
+     convertCSV()
+ });
 
-var clearCSVtoJSONButton = document.getElementById("clearCSV")
-clearCSVtoJSONButton.addEventListener("click", function () {
-    clearBoxes('CSVinput', 'JSONoutput', 'message')
-})
+ let clearJSONtoCSVButton = document.getElementById("clearJSON")
+ clearJSONtoCSVButton.addEventListener("click", function () {
+     clearBoxes('JSONinput', 'CSVoutput', 'message')
+ })
+
+ let clearCSVtoJSONButton = document.getElementById("clearCSV")
+ clearCSVtoJSONButton.addEventListener("click", function () {
+     clearBoxes('CSVinput', 'JSONoutput', 'message')
+ })
+
+ let uploadJSONFile = document.getElementById('json-file')
+ uploadJSONFile.addEventListener('change', function (e) {
+     readFile(e.target.files[0], 'json', 'json-file', 'JSONinput')
+ });
+
+
+ let uploadCSVFile = document.getElementById('csv-file')
+ uploadCSVFile.addEventListener('change', function (e) {
+     readFile(e.target.files[0], 'json', 'csv-file', 'CSVinput')
+ });
 
 
 
+// file reader
+function readFile(file, ext, inputField, outputField) {
+let reader = new FileReader()
+let extension = file.name.split('.')[1]
+if (extension != ext) {
+    alert('Please upload only ' + ext + ' files')
+    document.getElementById(inputField).value = "";
+    return
+}
+reader.readAsText(file);
+reader.onload = function (event) {
+    document.getElementById(outputField).value = event.target.result
+}
+}
 
+ 
 
-    
