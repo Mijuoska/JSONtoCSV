@@ -9,12 +9,12 @@
  function ConvertToJS() {
      let input = document.getElementById('JSONinput').value
      try {
-         var JSobject = JSON.parse(input);
+         var JSObject = JSON.parse(input);
      } catch (e) {
          document.getElementById('message').innerHTML = "<p style='color: red;'>Text area empty or not valid JSON!</p>"
          return false;
      }
-     return JSobject;
+     return JSObject;
  }
 
  function createCSV(JSObject) {
@@ -23,14 +23,15 @@
      if (!JSObject[0]) {
          var headers = Object.keys(JSObject);
          values.push(Object.values(JSObject))
-     } else {
+     } else if (JSObject[0]) {
+        var headers = Object.keys(JSObject[0]);
          for (let i = 0; i < JSObject.length; i++) {
              values.push(Object.values(JSObject[i]))
-         }
      }
      CSV = [headers, values]
      return CSV
  }
+}
 
 
 
@@ -50,17 +51,19 @@
 
 
 
- function getLineBreakIndex(csvArr) {
-     return csvArr[0].indexOf("\n")
- }
-
-
  function createCSVArray(input) {
   let csvArr = input.split("\n")
     for (let i = 0; i < csvArr.length; i++) {
         csvArr[i] = csvArr[i].replace(/\n/ig, "")
         csvArr[i] = csvArr[i].trim()
         csvArr[i] = csvArr[i].split(",")
+    // this removes the empty strings at the end of array
+    csvArr.forEach(function (str) {
+        if (str == "") {
+            csvArr.splice(csvArr.indexOf(str), 1)
+        }
+    });
+       
     }
      return csvArr
  }
