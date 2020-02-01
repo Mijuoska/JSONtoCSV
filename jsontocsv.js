@@ -35,7 +35,7 @@
 
 
 
- function printCSV() {
+ function convertJSON() {
      let JSObject = ConvertToJS();
      let CSVarr = createCSV(JSObject)
      let headersArr = CSVarr[0]
@@ -137,7 +137,7 @@
 
  let convertJSONButton = document.getElementById("convertJSON")
  convertJSONButton.addEventListener("click", function () {
-     printCSV()
+     convertJSON()
 
  })
 
@@ -181,6 +181,11 @@ if (extension != ext) {
 reader.readAsText(file);
 reader.onload = function (event) {
     document.getElementById(outputField).value = event.target.result
+    if (ext == "json") {
+        convertJSON();
+    } else if (ext == "csv") {
+        convertCSV()
+    }
 }
 }
 
