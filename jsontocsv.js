@@ -57,6 +57,10 @@
   let csvArr = input.split("\n")
     for (let i = 0; i < csvArr.length; i++) {
         csvArr[i] = csvArr[i].replace(/\n/ig, "")
+        // in case of separator being something else than a comma, we have to deal with commas within columns
+        if (separator != "comma") {
+            csvArr[i] = csvArr[i].replace(regexMap["comma"], ".")
+        }
         csvArr[i] = csvArr[i].replace(regex, ",")
         csvArr[i] = csvArr[i].trim()
         csvArr[i] = csvArr[i].split(",")
