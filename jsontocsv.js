@@ -51,22 +51,27 @@
 
 
 
- function createCSVArray(input) {
+ function createCSVArray(input, separator) {
+ let regexMap = {"comma": /,/g, "semicolon": /;/g, "pipe": /|/}
+ let regex = regexMap[separator]
   let csvArr = input.split("\n")
     for (let i = 0; i < csvArr.length; i++) {
         csvArr[i] = csvArr[i].replace(/\n/ig, "")
+        csvArr[i] = csvArr[i].replace(regex, ",")
         csvArr[i] = csvArr[i].trim()
         csvArr[i] = csvArr[i].split(",")
+        
+    }
     // this removes the empty strings at the end of array
     csvArr.forEach(function (str) {
         if (str == "") {
             csvArr.splice(csvArr.indexOf(str), 1)
         }
     });
-       
+         return csvArr
+  
     }
-     return csvArr
- }
+
 
  function createJSOBject(csvArr) {
      header = csvArr.splice(0,1)[0]
@@ -87,8 +92,9 @@
 
 
  function convertCSV() {
-     const input = document.getElementById('CSVinput').value
-     csvArr = createCSVArray(input);
+     let delimiter = document.getElementById('delimiter').value
+     let input = document.getElementById('CSVinput').value
+     csvArr = createCSVArray(input, delimiter);
      let JSObject = createJSOBject(csvArr)
      document.getElementById('JSONoutput').value = JSON.stringify(JSObject)
  }
@@ -154,7 +160,7 @@
 
  let uploadCSVFile = document.getElementById('csv-file')
  uploadCSVFile.addEventListener('change', function (e) {
-     readFile(e.target.files[0], 'json', 'csv-file', 'CSVinput')
+     readFile(e.target.files[0], 'csv', 'csv-file', 'CSVinput')
  });
 
 
