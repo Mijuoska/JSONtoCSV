@@ -7,9 +7,10 @@
  
  
  function ConvertToJS() {
+     let JSObject
      let input = document.getElementById('JSONinput').value
      try {
-         var JSObject = JSON.parse(input);
+         JSObject = JSON.parse(input);
      } catch (e) {
          document.getElementById('message').innerHTML = "<p style='color: red;'>Text area empty or not valid JSON!</p>"
          return false;
@@ -18,13 +19,14 @@
  }
 
  function createCSV(JSObject) {
+     let headers
      let values = []
      // get object properties and values
      if (!JSObject[0]) {
-         var headers = Object.keys(JSObject);
+         headers = Object.keys(JSObject);
          values.push(Object.values(JSObject))
      } else if (JSObject[0]) {
-        var headers = Object.keys(JSObject[0]);
+        headers = Object.keys(JSObject[0]);
          for (let i = 0; i < JSObject.length; i++) {
              values.push(Object.values(JSObject[i]))
      }
