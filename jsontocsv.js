@@ -107,15 +107,19 @@
 
 
 
- function clearBoxes(input, output, message) {
+ function clearBoxes(input, output, fileInput, convertButton, message) {
      document.getElementById(input).value = ""
      document.getElementById(output).value = ""
+     document.getElementById(fileInput).value = "";
      if (document.getElementById(message)) {
          document.getElementById(message).innerText = ""
      }
+     if (document.getElementById(convertButton).classList.value == 'hide') {
+         document.getElementById(convertButton).classList.toggle('hide')
+     }
  }
 
-
+// needs to be refactored
 
  var modeSelector = document.getElementsByName("mode")
  modeSelector.forEach(function (option) {
@@ -150,12 +154,12 @@
 
  let clearJSONtoCSVButton = document.getElementById("clearJSON")
  clearJSONtoCSVButton.addEventListener("click", function () {
-     clearBoxes('JSONinput', 'CSVoutput', 'message')
+     clearBoxes('JSONinput', 'CSVoutput', 'json-file', 'convertJSON', 'message')
  })
 
  let clearCSVtoJSONButton = document.getElementById("clearCSV")
  clearCSVtoJSONButton.addEventListener("click", function () {
-     clearBoxes('CSVinput', 'JSONoutput', 'message')
+     clearBoxes('CSVinput', 'JSONoutput', 'csv-file', 'convertCSV', 'message')
  })
 
  let uploadJSONFile = document.getElementById('json-file')
@@ -184,8 +188,14 @@ reader.readAsText(file);
 reader.onload = function (event) {
     document.getElementById(outputField).value = event.target.result
     if (ext == "json") {
+        if (document.getElementById('convertJSON').classList.value != 'hide') {
+        document.getElementById('convertJSON').classList.toggle('hide')
+        }
         convertJSON();
     } else if (ext == "csv") {
+        if (document.getElementById('convertCSV').classList.value != 'hide') {
+         document.getElementById('convertCSV').classList.toggle('hide')
+        }
         convertCSV()
     }
 }

@@ -1,30 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<style>
-form {
-    margin: 10px;
-}
 
-.show {
-    display: block;
-}
-
-.hide {
-    display: none;
-}
-
-.container {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-}
-
-.column {
-    margin: 10px;
-}
-
-</style>
+<link rel="stylesheet" href="styles.css">
 
 
 <title>JSON to CSV converter</title>
@@ -40,7 +18,7 @@ form {
 <div class="JSONtoCSV show">
 <div class="container">
 <div class="column">
-<textarea id="JSONinput" rows="15" cols="60" placeholder="Enter JSON"></textarea><br><br>
+<textarea id="JSONinput" rows="15" cols="60" placeholder="Enter JSON or upload a file below"></textarea><br><br>
 </div>
 <div class="column">
 <textarea id="CSVoutput" rows="15" cols="60" value=""></textarea><br><br>
@@ -66,7 +44,7 @@ form {
 </div>
 <div class="container">
 <div class="column">
-<textarea id="CSVinput" rows="15" cols="60" placeholder="Enter CSV"></textarea><br><br>
+<textarea id="CSVinput" rows="15" cols="60" placeholder="Enter CSV or upload a file below"></textarea><br><br>
 </div>
 <div class="column">
 <textarea id="JSONoutput" rows="15" cols="60" value=""></textarea>
