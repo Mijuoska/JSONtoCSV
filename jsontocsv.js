@@ -107,26 +107,23 @@
      if (document.getElementById(message)) {
          document.getElementById(message).innerText = ""
      }
-     if (document.getElementById(convertButton).classList.value == 'hide') {
+     if (document.getElementById(convertButton).classList.contains('hide')) {
+         console.log('inside if')
          document.getElementById(convertButton).classList.toggle('hide')
      }
  }
 
-// needs to be refactored
 
- var modeSelector = document.getElementsByName("mode")
+ let modeSelector = document.getElementsByName("mode")
  modeSelector.forEach(function (option) {
      option.addEventListener("change", function (e) {
          if (e.target.value == 'jsontocsv') {
-             document.getElementsByClassName('JSONtoCSV')[0].classList.add('show')
-             document.getElementsByClassName('JSONtoCSV')[0].classList.remove('hide')
-             document.getElementsByClassName('CSVtoJSON')[0].classList.add('hide')
+             document.getElementsByClassName('JSONtoCSV')[0].classList.toggle('hide')
+             document.getElementsByClassName('CSVtoJSON')[0].classList.toggle('hide')
 
          } else if (e.target.value == 'csvtojson') {
-             document.getElementsByClassName('CSVtoJSON')[0].classList.add('show')
-             document.getElementsByClassName('CSVtoJSON')[0].classList.remove('hide')
-             document.getElementsByClassName('JSONtoCSV')[0].classList.add('hide')
-             document.getElementsByClassName('JSONtoCSV')[0].classList.remove('show')
+             document.getElementsByClassName('CSVtoJSON')[0].classList.toggle('hide')
+             document.getElementsByClassName('JSONtoCSV')[0].classList.toggle('hide')
 
          }
 
@@ -181,12 +178,12 @@ reader.readAsText(file);
 reader.onload = function (event) {
     document.getElementById(outputField).value = event.target.result
     if (ext == "json") {
-        if (document.getElementById('convertJSON').classList.value != 'hide') {
+        if (!document.getElementById('convertJSON').classList.containes('hide')) {
         document.getElementById('convertJSON').classList.toggle('hide')
         }
         convertJSON();
     } else if (ext == "csv") {
-        if (document.getElementById('convertCSV').classList.value != 'hide') {
+        if (!document.getElementById('convertCSV').classList.contains('hide')) {
          document.getElementById('convertCSV').classList.toggle('hide')
         }
         convertCSV()

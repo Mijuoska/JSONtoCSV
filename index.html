@@ -2,6 +2,8 @@
 <html>
 <head>
 
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 <link rel="stylesheet" href="styles.css">
 
 
@@ -9,25 +11,40 @@
 </head>
 <body>
 <h1>JSON-CSV-JSON converter</h1>
+<div class="container">
 <h2>Convert</h2>
 <form>
-<input type="radio" id="jsontocsv" name="mode" value="jsontocsv" checked>JSON to CSV</input><br><br>
-<input type="radio" id="csvtojson" name="mode" value="csvtojson">CSV to JSON</input>
+<div class="form-check">
+<input class="form-check-input" type="radio" id="jsontocsv" name="mode" value="jsontocsv" class="form-control" checked>
+<label class="form-check-label" for="jsontocsv">JSON to CSV</label>
+</div>
+<div class="form-check">
+<input class="form-check-input" type="radio" id="csvtojson" name="mode" value="csvtojson" class="form-control">
+<label aclass="form-check-label" for="csvtojson">CSV to JSON</label>
+</div>
 </form>
-
+</div>
 <div class="JSONtoCSV show">
 <div class="container">
-<div class="column">
-<textarea id="JSONinput" rows="15" cols="60" placeholder="Enter JSON or upload a file below"></textarea><br><br>
+<div class="custom-file">
+<input type="file" class="custom-file-input" id="json-file" name="files[]" />
+<label class="custom-file-label" for="json-file">Choose file</label>
+
 </div>
-<div class="column">
-<textarea id="CSVoutput" rows="15" cols="60" value=""></textarea><br><br>
+<div class="row">
+<div class="col-lg-6">
+<textarea id="JSONinput" rows="12" cols="60" placeholder="Enter JSON or upload a file"></textarea>
+</div>
+<div class="col-lg-6">
+<textarea id="CSVoutput" rows="12" cols="60" value=""></textarea><br><br>
 </div>
 </div>
-<button id="convertJSON">Convert</button><br><br>
-<button id="clearJSON">Clear</button><br><br>
-<!-- File selector -->
-<input type="file" id="json-file" name="files[]" />
+
+<button type="button" class="btn btn-primary" id="convertJSON">Convert</button>
+<button type="button" class="btn btn-secondary" id="clearJSON">Clear</button>
+
+
+</div>
 
 
 
@@ -35,25 +52,32 @@
 </div>
 
 <div class="CSVtoJSON hide">
+    <div class="container">
+
 <div class="delimiter-container">Choose delimiter
 <select id="delimiter">
+
     <option value="comma">, (default)</option>
     <option value="semicolon">;</option>
     <option value="pipe">|</option>
 </select>
 </div>
-<div class="container">
-<div class="column">
-<textarea id="CSVinput" rows="15" cols="60" placeholder="Enter CSV or upload a file below"></textarea><br><br>
+
+    <div class="custom-file">
+        <input type="file" class="custom-file-input" id="csv-file" name="files[]" />
+        <label class="custom-file-label" for="json-file">Choose file</label>
 </div>
-<div class="column">
-<textarea id="JSONoutput" rows="15" cols="60" value=""></textarea>
+<div class="row">
+<div class="col-lg-6">
+<textarea id="CSVinput" rows="12" cols="60" placeholder="Enter CSV or upload a file"></textarea>
+</div>
+<div class="col-lg-6">
+<textarea id="JSONoutput" rows="12" cols="60" value=""></textarea>
 </div>
 </div>
-<button id="convertCSV">Convert</button><br><br>
-<button id="clearCSV">Clear</button><br><br>
-<!-- File selector -->
-<input type="file" id="csv-file" name="files[]" />
+
+<button type="button" class="btn btn-primary" id="convertCSV">Convert</button>
+<button type="button" class="btn btn-secondary" id="clearCSV">Clear</button>
 
 </div>
 
