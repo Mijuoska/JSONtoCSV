@@ -1,7 +1,6 @@
  
- function ConvertToJS() {
+ function convertToJS(input) {
      let JSObject
-     let input = document.getElementById('JSONinput').value
      try {
          JSObject = JSON.parse(input);
      } catch (e) {
@@ -14,6 +13,7 @@
  function createCSV(JSObject) {
      let headers
      let values = []
+     let CSV 
      // get object properties and values
      if (!JSObject[0]) {
          headers = Object.keys(JSObject);
@@ -23,15 +23,17 @@
          for (let i = 0; i < JSObject.length; i++) {
              values.push(Object.values(JSObject[i]))
      }
-     CSV = [headers, values]
-     return CSV
+    
  }
+  CSV = [headers, values]
+  return CSV
 }
 
 
 
  function convertJSON() {
-     let JSObject = ConvertToJS();
+     let input = document.getElementById('JSONinput').value
+     let JSObject = convertToJS(input);
      let CSVarr = createCSV(JSObject)
      let headersArr = CSVarr[0]
      let valuesArr = CSVarr[1]
@@ -42,7 +44,6 @@
      });
      document.getElementById('CSVoutput').value = CSVheaders + CSVvalues
  }
-
 
 
 
@@ -108,7 +109,6 @@
          document.getElementById(message).innerText = ""
      }
      if (document.getElementById(convertButton).classList.contains('hide')) {
-         console.log('inside if')
          document.getElementById(convertButton).classList.toggle('hide')
      }
  }
@@ -130,6 +130,9 @@
      });
 
  });
+
+
+
 
  let convertJSONButton = document.getElementById("convertJSON")
  convertJSONButton.addEventListener("click", function () {
@@ -157,11 +160,22 @@
      readFile(e.target.files[0], 'json', 'json-file', 'JSONinput')
  });
 
+ let saveCSVFile = document.getElementById('saveCSV')
+saveCSVFile.addEventListener('click', function (e) {
+   let content = document.getElementById('CSVoutput').value
+    saveFile(content, 'mycsv.csv', 'text/csv')
+});
 
  let uploadCSVFile = document.getElementById('csv-file')
  uploadCSVFile.addEventListener('change', function (e) {
      readFile(e.target.files[0], 'csv', 'csv-file', 'CSVinput')
  });
+
+  let saveJSONFile = document.getElementById('saveJSON')
+  saveJSONFile.addEventListener('click', function (e) {
+      let content = document.getElementById('JSONoutput').value
+      saveFile(content, 'myjson.json', 'text/plain')
+  });
 
 
 
@@ -178,7 +192,7 @@ reader.readAsText(file);
 reader.onload = function (event) {
     document.getElementById(outputField).value = event.target.result
     if (ext == "json") {
-        if (!document.getElementById('convertJSON').classList.containes('hide')) {
+        if (!document.getElementById('convertJSON').classList.contains('hide')) {
         document.getElementById('convertJSON').classList.toggle('hide')
         }
         convertJSON();
@@ -191,5 +205,13 @@ reader.onload = function (event) {
 }
 }
 
+// file saver
+
+function saveFile(content, filename, filetype) {
+var blob = new Blob([content], {
+    type: filetype + ";charset=utf-8"
+});
+saveAs(blob, filename);
+}
  
 
